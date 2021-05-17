@@ -18,4 +18,8 @@ public class CabInvoiceGenerator {
         }
         return totalFare;
     }
+    public EnhancedInvoice getInvoiceSummary(Ride[] rides) {
+        double totalFare = calculateFare(rides);
+        return new EnhancedInvoice(rides.length, totalFare);
+    }
 }
