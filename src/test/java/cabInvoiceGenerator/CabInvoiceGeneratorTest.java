@@ -1,6 +1,8 @@
 package cabInvoiceGenerator;
 
 
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -42,6 +44,17 @@ public class CabInvoiceGeneratorTest {
         };
        
         EnhancedInvoice invoiceSummary =  invoiceGenerator.getInvoiceSummary(rides);
+        EnhancedInvoice expectedInvoiceSummary = new EnhancedInvoice(3, 80.0);
+        Assert.assertEquals(expectedInvoiceSummary, invoiceSummary);
+    }
+    @Test
+    public void givenUserId_ShouldReturnInvoiceSummary() {
+        RideRepository[] repositoryList = {new RideRepository(101, new Ride[]{new Ride(5.0, 10), new Ride(0.3, 1), new Ride(1.0, 5)}),
+                new RideRepository(102, new Ride[]{new Ride(5.5, 10), new Ride(0.2, 2), new Ride(3.0, 7)}),
+                new RideRepository(103, new Ride[]{new Ride(6.0, 10), new Ride(0.1, 3), new Ride(5.0, 10)})
+        };
+        InvoiceService invoiceService = new InvoiceService(Arrays.asList(repositoryList));
+        EnhancedInvoice invoiceSummary = invoiceService.getInvoice(101);
         EnhancedInvoice expectedInvoiceSummary = new EnhancedInvoice(3, 80.0);
         Assert.assertEquals(expectedInvoiceSummary, invoiceSummary);
     }
