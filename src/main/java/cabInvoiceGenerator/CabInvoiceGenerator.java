@@ -1,25 +1,24 @@
 package cabInvoiceGenerator;
 
+import java.util.List;
+
 public class CabInvoiceGenerator {
-
-    private static final double COST_PER_KILOMETER = 10.0;
-    private static final int COST_PER_MINUTE = 1;
-    private static final double MINIMUM_FARE = 5;
-
     public double calculateFare(double distance, int time) {
-        if (distance<MINIMUM_FARE)
-            return MINIMUM_FARE;
-        return distance * COST_PER_KILOMETER +time * COST_PER_MINUTE;
+        return CabRide.NORMAL.calculateFarePerRide(distance, time);
     }
-    public double calculateFare(Ride[] rides) {
-        double totalFare = 0;
-        for (Ride ride:rides) {
-            totalFare+=calculateFare(ride.distance,ride.time);
+
+    public double calculatePremiumRideFare(double distance, int time) {
+        return CabRide.PREMIUM.calculateFarePerRide(distance, time);
+    }
+
+    public double calculateFare(List<Ride> rides) throws InvoiceException{
+        double totalFareForAllRides = 0.0;
+        for (Ride ride : rides) {
+            if(!(ride.rideType instanceof CabRide))
+                throw new InvoiceException("Invalid ride category", InvoiceException.ExceptionType.INVALID_RIDE_TYPE);
+            else
+                totalFareForAllRides += ride.rideType.calculateFarePerRide(ride);
         }
-        return totalFare;
-    }
-    public EnhancedInvoice getInvoiceSummary(Ride[] rides) {
-        double totalFare = calculateFare(rides);
-        return new EnhancedInvoice(rides.length, totalFare);
+        return totalFareForAllRides;
     }
 }

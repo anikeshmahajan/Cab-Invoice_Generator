@@ -1,6 +1,7 @@
 package cabInvoiceGenerator;
 
 
+
 public class EnhancedInvoice {
     private int numberOfRides;
     private double totalFare;
